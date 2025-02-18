@@ -128,6 +128,24 @@ app.delete('/produtos/:id', (requisicao, resposta) => {
       }
     );
   }
+});
+
+// deletar tudo
+
+app.delete('/produtos', (requisicao, resposta) => {
+
+  try {
+    bancoDados.length = 0;
+    resposta.status(200).json({mensagem: "Produtos deletados com sucesso"})
+
+  } catch (error) {
+    resposta.status(500).json(
+      {
+        msg: "Erro ao deletar produtos",
+        erro: error.mensagem
+      }
+    );
+  }
 })
 
 app.listen(port, () => {

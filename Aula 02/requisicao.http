@@ -21,3 +21,26 @@ GET http://localhost:3000/produtos/1
 Content-Type: application/json
 
 ###
+
+###  editar produto
+PUT http://localhost:3000/produtos/1
+Content-Type: application/json
+
+{
+    "novoNome": "GTX 3080 16gb",
+    "novoPreco": 12000
+}
+
+###
+
+### deletar
+DELETE http://localhost:3000/produtos/1
+Content-Type: application/json
+
+###
+
+### deletar todos
+DELETE http://localhost:3000/produtos/
+Content-Type: application/json
+
+###
