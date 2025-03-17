@@ -1,5 +1,5 @@
 const { pool } = require('../../../config/database');
-
+// model é o que está mais próximo do banco de dados
 class AlunoModel{
     static async criar(matricula, nome, email, senha){
         // static: não precisa ser instanciada
@@ -37,4 +37,4 @@ class AlunoModel{
     }
 }
 
-module.exports = { AlunoModel }
+module.exports =  AlunoModel;

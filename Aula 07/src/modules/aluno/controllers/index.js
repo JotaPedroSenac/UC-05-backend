@@ -14,7 +14,20 @@ class AlunoController{
         }
     }
     static async editar(requisicao, resposta){
-
+        try {
+            const matricula = requisicao.params.matricula;
+            const { nome, email, senha } = requisicao.body;
+            if (!nome || !email || !senha) {
+                return resposta.status(400).json({mensagem: "Todos os campos devem ser preenchidos"});
+            }
+            const alunoEditado = await AlunoModel.editar(matricula, nome, email, senha);
+            if(alunoEditado.length === 0){
+                return resposta.status(400).json({mensagem: "matricula está errada ou não existe"});
+            }
+            resposta.status(201).json({mensagem: "Aluno editado com sucesso", aluno: alunoEditado});
+        } catch (error) {
+            resposta.status(500).json({mensagem: "Erro ao editar o aluno!", erro: error.message})
+        }
     }
     static async listarTodos(requisicao, resposta){
         try {
@@ -32,7 +45,7 @@ class AlunoController{
         try {
             const matricula = requisicao.params.matricula;
             const aluno = await AlunoModel.listarPorMatricula(matricula)
-            if (!aluno) {
+            if (aluno.length === 0) {
                 return resposta.status(400).json({ mensagem: "Aluno não encontrado" });
             }
             resposta.status(200).json(aluno);
@@ -43,10 +56,11 @@ class AlunoController{
     static async excluirPorMatricula(requisicao, resposta){
             try {
                 const matricula = requisicao.params.matricula;
-                const exclusao = await AlunoModel.excluirPorMatricula(matricula);
-                if (!exclusao) {
+                const aluno = await AlunoModel.listarPorMatricula(matricula);
+                if (!aluno) {
                     return resposta.status(400).json({ mensagem: "aluno não encontrado" });
                 }
+                await AlunoModel.excluirPorMatricula(matricula);
                 resposta.status(200).json({mensagem: "aluno deletado com sucesso"});
             } catch (error) {
                 resposta.status(500).json({mensagem: "Erro ao deletar aluno!", erro: error.message});
@@ -54,10 +68,12 @@ class AlunoController{
     }
     static async excluirTodos(requisicao, resposta){
         try {
-            await AlunoModel.excluirTodos;
+            await AlunoModel.excluirTodos();
             resposta.status(200).json({mensagem: "Todos os alunos foram deletados"});
         } catch (error) {
             resposta.status(500).json({mensagem: "Erro ao deletar alunos!", erro: error.message});
         }
     }
 }
+
+module.exports = AlunoController ;
