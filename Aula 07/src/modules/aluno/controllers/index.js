@@ -41,9 +41,23 @@ class AlunoController{
         }
     }
     static async excluirPorMatricula(requisicao, resposta){
-
+            try {
+                const matricula = requisicao.params.matricula;
+                const exclusao = await AlunoModel.excluirPorMatricula(matricula);
+                if (!exclusao) {
+                    return resposta.status(400).json({ mensagem: "aluno não encontrado" });
+                }
+                resposta.status(200).json({mensagem: "aluno deletado com sucesso"});
+            } catch (error) {
+                resposta.status(500).json({mensagem: "Erro ao deletar aluno!", erro: error.message});
+            }
     }
     static async excluirTodos(requisicao, resposta){
-
+        try {
+            await AlunoModel.excluirTodos;
+            resposta.status(200).json({mensagem: "Todos os alunos foram deletados"});
+        } catch (error) {
+            resposta.status(500).json({mensagem: "Erro ao deletar alunos!", erro: error.message});
+        }
     }
 }
