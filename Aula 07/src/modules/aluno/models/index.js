@@ -31,9 +31,8 @@ class AlunoModel{
         await pool.query(consulta, dados);
     }
     static async excluirTodos(){
-        const dados = [matricula];
         const consulta = `delete from aluno`;
-        await pool.query(consulta, dados);
+        await pool.query(consulta);
     }
 }
 
