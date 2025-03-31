@@ -27,7 +27,7 @@ class EnderecoModel{
         return resultado.rows
     }
 
-    static async listarEnderecoCidade(cidade){
+    static async listarEnderecoCidade(cidade){ 
         const dados = [cidade];
         const consulta = `select * from endereco where localidade = $1`
         const resultado = await pool.query(consulta, dados);
