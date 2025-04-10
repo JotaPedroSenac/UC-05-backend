@@ -1,11 +1,11 @@
 import './App.css/'
-import ListarAlunos from './pages/ListarAlunos/ListarAlunos'
+import GerenciarAlunos from "./pages/GerenciarAlunos/GerenciarAlunos"
 
 function App() {
 
   return (
     <>
-      <ListarAlunos />
+      <GerenciarAlunos />
     </>
   )
 }
