@@ -5,6 +5,7 @@ const Aluno = sequelize.define(
   'Aluno',
   {
     // Model attributes are defined here
+    // inicia pelas tabelas pais (não tem fk)
     matricula: {
       type: DataTypes.CHAR(5),
       primaryKey: true

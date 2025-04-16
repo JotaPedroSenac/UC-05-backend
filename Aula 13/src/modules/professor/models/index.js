@@ -1,40 +1,44 @@
-const { pool } = require('../../../config/database');
+const {DataTypes} = require('sequelize');
+const sequelize = require('../../../config/configDb')
 
-class ProfessorModel{
-    static async criar(matricula, nome, email, senha, turma){
-        // static: não precisa ser instanciada
-        const dados = [matricula, nome, email, senha, turma];
-        const consulta = `insert into professor (matricula, nome, email, senha, turma) values ($1, $2, $3, $4, $5) returning *`;
-        const novoProfessor = await pool.query(consulta, dados);
-        return novoProfessor.rows;
+const Professor = sequelize.define('Professor', {
+    matricula:{
+        type: DataTypes.CHAR(8),
+        primaryKey: true,
+        validate:{
+            is:{
+                // regex da matricula (letra + 7 numeros)
+                args: /^[A-Za-z][0-9]{7}$/,
+                msg: 'A matricula deve começar com uma letra e ter 7 numeros'
+            }
+        }
+    } ,
+    nome: {
+        type: DataTypes.STRING(100),
+        allowNull: false,
+        validate: {
+            args:[100]
+        }
+    },
+    email: {
+        type: DataTypes.STRING(100),
+        allowNull: false,
+        unique: true,
+        validate: {
+            isEmail: {
+                msg: 'Forneça um email válido'
+            }
+        }
+        
+    },
+    senha: {
+        type: DataTypes.CHAR(10),
+        allowNull: false,
+        validate: {
+            args: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_])[A-Za-z\d\W_]{10}$/,
+            msg: 'A senha deve ter exatamente 10 caracteres e conter pelo menos uma letra maiúscula, uma letra minúscula, um número e um caractere especial.'
+        }
     }
-    static async editar(matricula, nome, email, senha, turma){
-        const dados = [matricula, nome, email, senha, turma];
-        const consulta = `update professor set nome = $2, email = $3, senha = $4, turma = $5 where matricula = $1 returning *`;
-        const professorAtualizado = await pool.query(consulta, dados);
-        return professorAtualizado.rows;
-    }
-    static async listar(){
-        const consulta = `select * from professor`;
-        const professores = await pool.query(consulta);
-        return professores.rows;
-    }
-    static async listarPorMatricula(matricula){
-        const dados = [matricula];
-        const consulta = `select * from professor where matricula = $1`;
-        const professor = await pool.query(consulta, dados);
-        return professor.rows;
-    }
-    static async excluirPorMatricula(matricula){
-        const dados = [matricula];
-        const consulta = `delete from professor where matricula = $1`;
-        await pool.query(consulta, dados);
-    }
-    static async excluirTodos(){
-        const dados = [matricula];
-        const consulta = `delete from professor`;
-        await pool.query(consulta, dados);
-    }
-}
+})
 
-module.exports = { ProfessorModel }
+module.exports = Professor
