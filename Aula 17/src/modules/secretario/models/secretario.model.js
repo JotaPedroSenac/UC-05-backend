@@ -1,7 +1,6 @@
 const sequelize = require('../../../config/configDb');
 const { DataTypes } = require('sequelize');
 
-
 const SecretarioModel = sequelize.define(
     'SecretarioModel',
     {
@@ -30,7 +29,7 @@ const SecretarioModel = sequelize.define(
         unique: true,
         allowNull: false,
         validate:{
-            isEmail:{
+            is:{
                 args:/^[a-zA-Z0-9._%+-]+@rn\.senac\.br$/,
                 msg: 'E-mail inválido! o email deve pertencer ao domínio @rn.senac.br'
             }

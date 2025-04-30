@@ -1,7 +1,6 @@
 const AlunoModel = require('../../aluno/model/aluno.model');
-const { Op } = require('sequelize');
 
-class SecretarioController{
+class AlunoController{
     static async criarAluno(req, res){
         try {
             const {matricula, nome, email, senha, turma_cod} = req.body
@@ -15,7 +14,7 @@ class SecretarioController{
         }
     }
 
-    static async listarAluno(req, res){
+    static async listarAlunos(req, res){
         try {
             const alunos = await AlunoModel.findAll();
             if (alunos.length === 0) {
@@ -66,10 +65,10 @@ class SecretarioController{
         }
     }
 
-    static async deletarAluno(req, res){
+    static async deletarAlunoPorMatricula(req, res){
         try {
             const matricula = req.params.matricula;
-            const aluno = await AlunoModel.findByPk({matricula});
+            const aluno = await AlunoModel.findByPk(matricula);
             if (!aluno) {
                 return res.status(404).json({msg: 'Aluno não encontrado'});
             }
@@ -83,6 +82,17 @@ class SecretarioController{
             res.status(500).json({msg: 'Erro interno do servidor. Por favor, tente mais tarde'});
         }
     }
+
+    static async deletarTodosAlunos(req, res){
+        try {
+            await AlunoModel.destroy({
+                where:{}
+            })
+            res.status(200).json({msg: 'Alunos excluidos com sucesso!'})
+        } catch (error) {
+            res.status(500).json({msg: 'Erro interno do servidor. Por favor, tente mais tarde'});
+        }
+    }
 }
 
-module.exports = SecretarioController;
+module.exports = AlunoController;
