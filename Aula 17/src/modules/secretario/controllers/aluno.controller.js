@@ -55,7 +55,7 @@ class AlunoController{
                 }
             );
 
-            if (alunoAtualizado.length) {
+            if (alunoAtualizado.length === 0) {
                 return res.status(404).json({msg: 'Aluno não encontrado!'});
             }
 

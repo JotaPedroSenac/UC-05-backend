@@ -13,6 +13,10 @@ const TurmaModel = sequelize.define(
         validate: {
             isNumeric:{
                 msg: 'É permitido apenas números'
+            },
+            len:{
+              args:[9],
+              msg: 'O código da turma deve ter 9 numeros'
             }
         }
       },
@@ -20,6 +24,15 @@ const TurmaModel = sequelize.define(
       fk_cod_curso:{
         type: DataTypes.INTEGER,
         allowNull: false,
+        validate: {
+          isNumeric:{
+            msg: 'É permitido apenas números'
+        },
+        len:{
+          args:[4],
+          msg: 'O código do curso deve ter 4 numeros'
+        }
+        },
         references:{
             model: 'curso',
             key: 'cod_curso'
@@ -29,6 +42,12 @@ const TurmaModel = sequelize.define(
       turno: {
         type: DataTypes.STRING(10),
         allowNull: false,
+        validate: {
+          isIn:{
+            args: [['matutino', 'vespertino', 'noturno']],
+            msg: 'Turno inválido'
+          }
+        }
       }
 
     },
